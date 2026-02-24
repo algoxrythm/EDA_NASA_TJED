@@ -21,76 +21,83 @@ This project explores the **NASA Turbofan Engine Degradation Simulation Dataset 
 
 ## 📂 Dataset Details
 
-**Source**: NASA Ames Prognostics Center of Excellence
-**Data Type**: Multivariate Time-Series
+**Source**: NASA Ames Prognostics Center of Excellence  
+**Data Type**: Multivariate Time-Series  
 **Format**: Each row represents a single time step for one engine.
 
 | Column                    | Description                                   |
 | ------------------------- | --------------------------------------------- |
-| `unit_number`             | Engine ID                                     |
+| `unit`                    | Engine ID                                     |
 | `time_in_cycles`          | Operational cycle (time step)                 |
-| `operational_setting_*`   | Environmental/operational conditions          |
+| `op_setting_*`            | Environmental/operational conditions          |
 | `sensor_1` to `sensor_21` | Sensor readings (e.g., temperature, pressure) |
 
 ---
 
-## 🧠 Problem Statement
+## ⚙️ Setup
 
-> **"Can we explore and visualize the patterns in sensor data that indicate engine degradation and estimate Remaining Useful Life (RUL)?"**
+Create and activate a virtual environment, then install dependencies:
 
----
-
-## 🧪 What I Did
-
-| Task                    | Description                                       |
-| ----------------------- | ------------------------------------------------- |
-| ✅ Data Loading          | Cleaned and structured the CMAPSS data            |
-| 🧮 RUL Calculation      | Computed Remaining Useful Life for each engine    |
-| 📊 Sensor Distributions | Plotted histograms, line plots, and boxplots      |
-| 📉 Sensor vs RUL        | Analyzed how sensor values degrade as engines age |
-| 🔗 Correlation Analysis | Found relationships among sensors                 |
-| 🔍 Unit-Level Analysis  | Compared degradation trends across engines        |
-| ✨ Insights & Summary    | Highlighted patterns that help in ML modeling     |
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
 
 ---
 
-## 📈 Sample Visualizations
+## ▶️ Run the analysis
 
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/your_image_url_here" width="600" alt="RUL Trends">
-  <br><em>Sensor 11 vs RUL across different engines</em>
-</p>
+Place `train_FD001.txt` locally (for example in `data/`), then run:
 
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/your_image_url_here" width="600" alt="Correlation Matrix">
-  <br><em>Sensor Correlation Heatmap</em>
-</p>
+```bash
+python eda_nasa_tjed.py --data-path data/train_FD001.txt --output-dir outputs
+```
+
+Generated artifacts include:
+
+- `outputs/summary.txt`
+- `outputs/failure_cycle_distribution.png`
+- `outputs/sensor_distributions.png`
+- `outputs/sensor_boxplots.png`
+- `outputs/sensor_correlation_matrix.png`
+- `outputs/selected_sensors_vs_rul.png`
+- `outputs/selected_features.txt`
+- `outputs/feature_importances.csv`
+- `outputs/top10_feature_importances.png`
+
+---
+
+## 📈 Visualizations
+
+The script now saves all visuals locally to `outputs/` so they render meaningfully in your own runs.  
+To publish images on GitHub, commit selected files from `outputs/` into a folder like `docs/images/` and link them here.
 
 ---
 
 ## 🛠 Tools & Libraries
 
-* Python (Google Colab)
+* Python
 * `pandas`, `numpy` – data manipulation
-* `matplotlib`, `seaborn`, `plotly` – visualizations
-* `scikit-learn` (for future modeling)
+* `matplotlib`, `seaborn` – visualizations
+* `scikit-learn` – baseline feature screening/modeling
 
 ---
 
-## 🔍 Key Insights
+## 🔍 Key Insights (from baseline EDA)
 
-* 📉 **Sensor 2, 3, 11, and 15** showed clear degradation over time.
-* ⚙️ Some sensors were flat or constant — candidates for removal.
-* 🔁 Engines degrade **non-uniformly**, meaning robust models must generalize.
-* 🚦 RUL is predictable based on selected sensor patterns.
+* 📉 **Sensor 2, 3, 11, and 15** often show degradation-relevant trends.
+* ⚙️ Some sensors are near-constant and can be candidates for removal.
+* 🔁 Engines degrade **non-uniformly**, so robust models must generalize across units.
+* 🚦 RUL can be learned from selected sensor patterns.
 
 ---
 
 ## 🧭 What's Next?
 
-* 🔧 Feature engineering: rolling averages, deltas, etc.
-* 🤖 Build ML models to predict RUL (Linear, Random Forest, LSTM)
-* 💻 Deploy as a live dashboard or Streamlit app
+* 🔧 Feature engineering: rolling averages, deltas, lag features
+* 🤖 Compare ML models for RUL (Linear, Random Forest, LSTM)
+* 💻 Optional deployment as Streamlit dashboard
 
 ---
 
@@ -98,14 +105,5 @@ This project explores the **NASA Turbofan Engine Degradation Simulation Dataset 
 
 * [NASA CMAPSS Dataset](https://www.nasa.gov/content/prognostics-center-of-excellence-data-set-repository)
 * [Original Paper](https://www.phmsociety.org/node/104)
-
----
-
-## 🙋‍♂️ Author
-
-**Pranav Patil**
-3rd Year Robotics & Automation Engineering Student
-📌 India | 🔧 ML, Robotics, and Embedded Systems Enthusiast
-📫 [LinkedIn](https://www.linkedin.com/in/yourprofile) • [GitHub](https://github.com/yourprofile)
 
 ---
